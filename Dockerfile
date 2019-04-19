@@ -53,10 +53,9 @@ RUN curl -L --output 'piaware_builder.tar.gz' "https://github.com/flightaware/pi
 RUN mkdir piaware_builder && cd piaware_builder && \
   tar -xvf ../piaware_builder.tar.gz --strip-components=1
 
-RUN ./sensible-build.sh stretch && \
-  cd package-stretch
+RUN cd /piaware_builder && ./sensible-build.sh stretch
 
-RUN dpkg-buildpackage -b
+RUN cd package-stretch && dpkg-buildpackage -b
 
 RUN dpkg -i ../piaware*.deb
 
