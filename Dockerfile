@@ -50,14 +50,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
 RUN curl -L --output 'piaware_builder.tar.gz' "https://github.com/flightaware/piaware_builder/archive/v${PIAWARE_VERSION}.tar.gz" && \
   sha256sum piaware_builder.tar.gz && echo "${PIAWARE_HASH} piaware_builder.tar.gz" | sha256sum -c
 
-RUN mkdir piaware_builder && cd piaware_builder && \
-  tar -xvf ../piaware_builder.tar.gz --strip-components=1
+WORKDIR piaware_builder
+RUN tar -xvf ../piaware_builder.tar.gz --strip-components=1
 
-RUN cd /piaware_builder && ./sensible-build.sh stretch
+RUN ./sensible-build.sh stretch
 
 RUN cd package-stretch && dpkg-buildpackage -b
 
-RUN dpkg -i ../piaware*.deb
+RUN dpkg -i piaware*.deb
 
 # final image #################################################################
 FROM base
