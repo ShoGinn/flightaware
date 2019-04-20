@@ -79,8 +79,6 @@ COPY --from=builder /usr/lib/fa_adept_codec /usr/lib/fa_adept_codec
 COPY piaware.conf /etc/piaware.conf
 COPY piaware-runner.sh /usr/bin/piaware-runner
 
-EXPOSE 30105/tcp
-
 ENTRYPOINT ["piaware-runner"]
 
 # Metadata
