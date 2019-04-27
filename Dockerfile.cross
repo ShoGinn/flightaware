@@ -1,11 +1,6 @@
 ARG BASE=debian:stretch-slim
 # base ########################################################################
-FROM $BASE as base
-
-ARG arch=none
-ENV ARCH=$arch
-
-COPY qemu/qemu-$ARCH-static* /usr/bin/
+FROM --platform=$TARGETPLATFORM $BASE as base
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
