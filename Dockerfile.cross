@@ -1,16 +1,17 @@
-ARG BASE=debian:stretch-slim
+ARG BASE
 # base ########################################################################
 FROM --platform=$TARGETPLATFORM $BASE as base
 
-ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+ENV LC_ALL=C.UTF-8 LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
         curl ca-certificates \
         net-tools iproute2 \
         tclx8.4 tcl8.6 tcllib tcl-tls itcl3 \
         python3 \
         procps && \
-    DEBIAN_FRONTEND=noninteractive apt-get clean && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 
@@ -20,10 +21,8 @@ FROM base as builder
 ARG PIAWARE_VERSION=3.7.0.1
 ARG PIAWARE_HASH=4af91aefaafa5ae32132e3198bd0b59ec87de170cf2b142fe1203f3762d1b78b
 
-ENV LC_ALL=C.UTF-8 LANG=C.UTF-8
-
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+RUN apt-get update && \
+  apt-get install -y --no-install-recommends \
   ca-certificates \
   libboost-system-dev \
   libboost-program-options-dev \
@@ -39,7 +38,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
   python3-venv \
   dh-systemd \
   libz-dev && \
-  DEBIAN_FRONTEND=noninteractive apt-get clean && \
+  apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
 RUN curl -L --output 'piaware_builder.tar.gz' "https://github.com/flightaware/piaware_builder/archive/v${PIAWARE_VERSION}.tar.gz" && \
@@ -77,11 +76,19 @@ COPY piaware-runner.sh /usr/bin/piaware-runner
 ENTRYPOINT ["piaware-runner"]
 
 # Metadata
-ARG VCS_REF="Unknown"
-LABEL maintainer="ginnserv@gmail.com" \
-      org.label-schema.name="Docker ADS-B - flightaware" \
-      org.label-schema.description="Docker container for ADS-B - This is the flightaware.com component" \
-      org.label-schema.url="https://github.com/ShoGinn/flightaware" \
-      org.label-schema.vcs-ref="${VCS_REF}" \
-      org.label-schema.vcs-url="https://github.com/ShoGinn/flightaware" \
-      org.label-schema.schema-version="1.0"
+ARG MAINTAINER
+ARG NAME
+ARG DESCRIPTION
+ARG URL
+ARG BUILD_DATE
+ARG VCS_URL
+ARG VCS_REF
+
+LABEL maintainer="${MAINTAINER}" \
+  org.label-schema.build-date="${BUILD_DATE}" \
+  org.label-schema.name="${NAME}" \
+  org.label-schema.description="${DESCRIPTION}" \
+  org.label-schema.url="${URL}" \
+  org.label-schema.vcs-ref="${VCS_REF}" \
+  org.label-schema.vcs-url="${VCS_URL}" \
+  org.label-schema.schema-version="1.0"
