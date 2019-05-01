@@ -4,7 +4,6 @@ FROM --platform=$TARGETPLATFORM debian:stretch-slim as base
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive
 
 RUN \
-    touch /etc/piaware.conf && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
         curl ca-certificates \

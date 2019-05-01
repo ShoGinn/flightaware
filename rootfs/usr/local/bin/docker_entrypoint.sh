@@ -3,8 +3,8 @@
 set -o errexit          # Exit on most errors (see the manual)
 #set -o errtrace         # Make sure any error trap is inherited
 set -o nounset          # Disallow expansion of unset variables
-#set -o pipefail         # Use last non-zero exit code in a pipeline
-set -o xtrace          # Trace the execution of the script (debug)
+set -o pipefail         # Use last non-zero exit code in a pipeline
+#set -o xtrace          # Trace the execution of the script (debug)
 
 
 echo "Waiting for dump1090 to start up"
@@ -14,7 +14,7 @@ echo
 echo "FLIGHTAWARE_FEEDER_ID=${FLIGHTAWARE_FEEDER_ID}"
 echo
 
-
+touch /etc/piaware.conf
 piaware-config "receiver-type" "other"
 piaware-config "receiver-host" "dump1090"
 piaware-config "receiver-port" "30005"
@@ -37,6 +37,6 @@ fi
 # This causes issues with extracting to ~/.shiv (the default) so use /tmp instead.
 export SHIV_ROOT='/tmp'
 
-piaware -plainlog
+exec piaware -plainlog
 
 exit ${?}
