@@ -1,6 +1,5 @@
-ARG BASE
 # base ########################################################################
-FROM --platform=$TARGETPLATFORM $BASE as base
+FROM --platform=$TARGETPLATFORM debian:stretch-slim as base
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive
 
@@ -56,6 +55,8 @@ RUN dpkg -i piaware*.deb
 # final image #################################################################
 FROM base
 
+COPY rootfs /
+
 COPY --from=builder /usr/lib/Tcllauncher1.8 /usr/lib/Tcllauncher1.8
 
 COPY --from=builder /usr/bin/piaware /usr/bin/piaware
@@ -70,25 +71,4 @@ COPY --from=builder /usr/lib/piaware-status /usr/lib/piaware-status
 COPY --from=builder /usr/lib/piaware_packages /usr/lib/piaware_packages
 COPY --from=builder /usr/lib/fa_adept_codec /usr/lib/fa_adept_codec
 
-COPY piaware.conf /etc/piaware.conf
-COPY piaware-runner.sh /usr/bin/piaware-runner
-
-ENTRYPOINT ["piaware-runner"]
-
-# Metadata
-ARG MAINTAINER
-ARG NAME
-ARG DESCRIPTION
-ARG URL
-ARG BUILD_DATE
-ARG VCS_URL
-ARG VCS_REF
-
-LABEL maintainer="${MAINTAINER}" \
-  org.label-schema.build-date="${BUILD_DATE}" \
-  org.label-schema.name="${NAME}" \
-  org.label-schema.description="${DESCRIPTION}" \
-  org.label-schema.url="${URL}" \
-  org.label-schema.vcs-ref="${VCS_REF}" \
-  org.label-schema.vcs-url="${VCS_URL}" \
-  org.label-schema.schema-version="1.0"
+ENTRYPOINT ["/usr/local/bin/docker_entrypoint.sh"]
