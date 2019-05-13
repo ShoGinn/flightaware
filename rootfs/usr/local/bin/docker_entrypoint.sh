@@ -12,6 +12,7 @@ sleep 5s
 
 echo
 echo "FLIGHTAWARE_FEEDER_ID=${FLIGHTAWARE_FEEDER_ID}"
+echo "FLIGHTAWARE_GPS_HOST=${FLIGHTAWARE_GPS_HOST}"
 echo
 
 touch /etc/piaware.conf
@@ -31,7 +32,10 @@ else
     piaware-config "feeder-id" "${FLIGHTAWARE_FEEDER_ID}"
 fi
 
-
+if [ -n "${FLIGHTAWARE_GPS_HOST}" ]; then
+    echo "GPS_HOST specified, forwarding port 2947 to ${FLIGHTAWARE_GPS_HOST}"
+    /usr/bin/socat -s TCP-LISTEN:2947,fork TCP:${FLIGHTAWARE_GPS_HOST}:2947 &
+fi
 # Fix issue with fa-mlat-client
 # The fa-mlat-client is run as "nobody" with most permissions dropped.
 # This causes issues with extracting to ~/.shiv (the default) so use /tmp instead.

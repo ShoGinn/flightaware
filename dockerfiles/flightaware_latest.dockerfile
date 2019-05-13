@@ -10,7 +10,8 @@ RUN \
         net-tools iproute2 \
         tclx8.4 tcl8.6 tcllib tcl-tls itcl3 \
         python3 \
-        procps && \
+        procps \
+        socat && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
