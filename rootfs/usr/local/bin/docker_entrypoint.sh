@@ -6,6 +6,8 @@ set -o errexit          # Exit on most errors (see the manual)
 #set -o pipefail         # Use last non-zero exit code in a pipeline
 #set -o xtrace          # Trace the execution of the script (debug)
 
+DUMP1090_SERVER=${DUMP1090_SERVER:=dump1090}
+DUMP1090_PORT=${DUMP1090_PORT:=30005}
 
 echo "Waiting for dump1090 to start up"
 sleep 5s
@@ -17,8 +19,8 @@ echo
 
 touch /etc/piaware.conf
 piaware-config "receiver-type" "other"
-piaware-config "receiver-host" "dump1090"
-piaware-config "receiver-port" "30005"
+piaware-config "receiver-host" "${DUMP1090_SERVER}"
+piaware-config "receiver-port" "${DUMP1090_PORT}"
 piaware-config "allow-auto-updates" "no"
 piaware-config "allow-manual-updates" "no"
 piaware-config "allow-mlat" "yes"
