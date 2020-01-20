@@ -1,5 +1,5 @@
 # base ########################################################################
-FROM --platform=$TARGETPLATFORM debian:stretch-slim as base
+FROM --platform=$TARGETPLATFORM debian:buster-slim as base
 
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive
 
@@ -48,11 +48,11 @@ RUN curl -L --output 'piaware_builder.tar.gz' "https://github.com/flightaware/pi
 WORKDIR piaware_builder
 RUN tar -xvf ../piaware_builder.tar.gz --strip-components=1
 
-RUN ./sensible-build.sh stretch
+RUN ./sensible-build.sh buster
 
-RUN cd package-stretch && dpkg-buildpackage -b
+RUN cd package-buster && dpkg-buildpackage -b
 
-RUN dpkg -i piaware*.deb
+RUN dpkg -i ../piaware*.deb
 
 # final image #################################################################
 FROM base
