@@ -19,8 +19,8 @@ RUN \
 # builder ########################################################################
 FROM base as builder
 
-ARG PIAWARE_VERSION=3.7.2
-ARG PIAWARE_HASH=415fb878d51d6884ff1327ac0bddfb45fe9f57b25a00b656c1e4be5d6e5334f8
+ARG PIAWARE_VERSION=3.8.0
+ARG PIAWARE_HASH=648090277bed633724b22850ce35ba38797ecf38753f74d7a8df115ff80899d8
 
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
