@@ -52,7 +52,7 @@ RUN ./sensible-build.sh buster
 
 RUN cd package-buster && dpkg-buildpackage -b
 
-RUN dpkg -i ../piaware*.deb
+RUN dpkg -i piaware*.deb
 
 # final image #################################################################
 FROM base
