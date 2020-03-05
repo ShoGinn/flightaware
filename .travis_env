@@ -1,0 +1,2 @@
+DOCKER_DESCRIPTION="Docker container for ADS-B - This is the flightaware.com component"
+DOCKER_NAME="flightaware"
