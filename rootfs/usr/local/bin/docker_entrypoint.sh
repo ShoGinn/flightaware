@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
-set -o errexit          # Exit on most errors (see the manual)
+set -o errexit # Exit on most errors (see the manual)
 #set -o errtrace         # Make sure any error trap is inherited
 #set -o nounset          # Disallow expansion of unset variables
 #set -o pipefail         # Use last non-zero exit code in a pipeline
@@ -26,7 +26,6 @@ piaware-config "allow-manual-updates" "no"
 piaware-config "allow-mlat" "yes"
 piaware-config "mlat-results" "yes"
 piaware-config "mlat-results-format" "beast,listen,30105"
- 
 
 if [ -z "${FLIGHTAWARE_FEEDER_ID}" ]; then
     echo "No FLIGHTAWARE_FEEDER_ID set"
@@ -36,7 +35,7 @@ fi
 
 if [ -n "${FLIGHTAWARE_GPS_HOST}" ]; then
     echo "GPS_HOST specified, forwarding port 2947 to ${FLIGHTAWARE_GPS_HOST}"
-    /usr/bin/socat -s TCP-LISTEN:2947,fork TCP:${FLIGHTAWARE_GPS_HOST}:2947 &
+    /usr/bin/socat -s TCP-LISTEN:2947,fork TCP:"${FLIGHTAWARE_GPS_HOST}":2947 &
 fi
 # Fix issue with fa-mlat-client
 # The fa-mlat-client is run as "nobody" with most permissions dropped.

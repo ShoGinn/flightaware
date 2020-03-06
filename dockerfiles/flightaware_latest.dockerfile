@@ -4,16 +4,16 @@ FROM --platform=$TARGETPLATFORM debian:stretch-slim as base
 ENV LC_ALL=C.UTF-8 LANG=C.UTF-8 DEBIAN_FRONTEND=noninteractive
 
 RUN \
-    apt-get update && \
-    apt-get install -y --no-install-recommends \
-        curl ca-certificates \
-        net-tools iproute2 \
-        tclx8.4 tcl8.6 tcllib tcl-tls itcl3 \
-        python3 \
-        procps \
-        socat && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+  apt-get update && \
+  apt-get install -y --no-install-recommends \
+  curl ca-certificates \
+  net-tools iproute2 \
+  tclx8.4 tcl8.6 tcllib tcl-tls itcl3 \
+  python3 \
+  procps \
+  socat && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 
 # builder ########################################################################
@@ -46,7 +46,7 @@ RUN apt-get update && \
 RUN curl -L --output 'piaware_builder.tar.gz' "https://github.com/flightaware/piaware_builder/archive/v${PIAWARE_VERSION}.tar.gz" && \
   sha256sum piaware_builder.tar.gz && echo "${PIAWARE_HASH} piaware_builder.tar.gz" | sha256sum -c
 
-WORKDIR piaware_builder
+WORKDIR /piaware_builder/
 RUN tar -xvf ../piaware_builder.tar.gz --strip-components=1
 
 RUN ./sensible-build.sh stretch
