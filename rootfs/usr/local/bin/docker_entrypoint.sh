@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -o errexit # Exit on most errors (see the manual)
 #set -o errtrace         # Make sure any error trap is inherited
@@ -35,6 +35,7 @@ fi
 
 if [ -n "${FLIGHTAWARE_GPS_HOST}" ]; then
     echo "GPS_HOST specified, forwarding port 2947 to ${FLIGHTAWARE_GPS_HOST}"
+    pkill socat
     /usr/bin/socat -s TCP-LISTEN:2947,fork TCP:"${FLIGHTAWARE_GPS_HOST}":2947 &
 fi
 # Fix issue with fa-mlat-client
